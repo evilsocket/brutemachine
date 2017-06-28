@@ -1,7 +1,8 @@
 # BruteMachine
 
 This is a Go library which main purpose is giving an interface to loop over a dictionary and use those words/lines as input for some 
-custom logic such as HTTP file bruteforcing, DNS bruteforcing, etc.
+custom logic such as HTTP file bruteforcing, DNS bruteforcing, etc. Brute-Machine will take care of parallelism, job dispatching and
+so on, allowing you to focus on what matters most, the actual logic of your software.
 
 [![baby-gopher](https://raw.githubusercontent.com/drnic/babygopher-site/gh-pages/images/babygopher-badge.png)](http://www.babygopher.org) 
 
