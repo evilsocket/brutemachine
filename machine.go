@@ -10,17 +10,17 @@ import (
 // This structure contains some runtime statistics.
 type Statistics struct {
 	// Time the execution started
-	start   time.Time
+	Start   time.Time
 	// Time the execution finished
-	stop    time.Time
+	Stop    time.Time
 	// Total duration of the execution
-	total   time.Duration
+	Total   time.Duration
 	// Executions per second
-	eps     float64
+	Eps     float64
 	// Total number of executions
-	execs   uint64
+	Execs   uint64
 	// Total number of executions with positive results.
-	results uint64
+	Results uint64
 }
 
 // This is where the main logic goes.
