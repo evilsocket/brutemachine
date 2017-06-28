@@ -112,12 +112,15 @@ func (m *Machine) Start() error {
 	return nil
 }
 
+func (m *Machine) UpdateStats() {
+	m.Stats.stop = time.Now()
+	m.Stats.total = m.Stats.stop.Sub(m.Stats.start)
+	m.Stats.eps = float64(m.Stats.execs) / m.Stats.total.Seconds()
+}
+
 // Wait for all jobs to be completed.
 func (m *Machine) Wait() {
 	// wait for everything to be completed
 	m.wait.Wait()
-
-	m.Stats.stop = time.Now()
-	m.Stats.total = m.Stats.stop.Sub(m.Stats.start)
-	m.Stats.eps = float64(m.Stats.execs) / m.Stats.total.Seconds()
+	m.UpdateStats()
 }
