@@ -58,7 +58,7 @@ func New( consumers int, filename string, run_handler RunHandler, res_handler Re
 	}
 
 	return &Machine{
-		Stats:       Statistics{execs: 0, results: 0, eps: 0.0},
+		Stats:       Statistics{Execs: 0, Results: 0, Eps: 0.0},
 		consumers:   workers,
 		filename:    filename,
 		output:      make(chan interface{}),
@@ -71,11 +71,11 @@ func New( consumers int, filename string, run_handler RunHandler, res_handler Re
 
 func (m *Machine) inputConsumer() {
 	for in := range m.input {
-		atomic.AddUint64(&m.Stats.execs, 1)
+		atomic.AddUint64(&m.Stats.Execs, 1)
 
 		res := m.run_handler(in)
 		if res != nil {
-			atomic.AddUint64(&m.Stats.results, 1)
+			atomic.AddUint64(&m.Stats.Results, 1)
 			m.output <- res
 		}
 		m.wait.Done()
@@ -98,7 +98,7 @@ func (m *Machine) Start() error {
 	// start the output consumer on a goroutine
 	go m.outputConsumer()
 
-	m.Stats.start = time.Now()
+	m.Stats.Start = time.Now()
 
 	lines, err := LineReader(m.filename, 0)
 	if err != nil {
@@ -113,9 +113,9 @@ func (m *Machine) Start() error {
 }
 
 func (m *Machine) UpdateStats() {
-	m.Stats.stop = time.Now()
-	m.Stats.total = m.Stats.stop.Sub(m.Stats.start)
-	m.Stats.eps = float64(m.Stats.execs) / m.Stats.total.Seconds()
+	m.Stats.Stop = time.Now()
+	m.Stats.Total = m.Stats.Stop.Sub(m.Stats.Start)
+	m.Stats.Eps = float64(m.Stats.Execs) / m.Stats.Total.Seconds()
 }
 
 // Wait for all jobs to be completed.
