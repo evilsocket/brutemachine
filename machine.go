@@ -15,6 +15,8 @@ type Statistics struct {
 	Stop    time.Time
 	// Total duration of the execution
 	Total   time.Duration
+	// Total number of inputs from the wordlist
+	Inputs  uint64
 	// Executions per second
 	Eps     float64
 	// Total number of executions
@@ -58,7 +60,7 @@ func New( consumers int, filename string, run_handler RunHandler, res_handler Re
 	}
 
 	return &Machine{
-		Stats:       Statistics{Execs: 0, Results: 0, Eps: 0.0},
+		Stats:       Statistics{},
 		consumers:   workers,
 		filename:    filename,
 		output:      make(chan interface{}),
@@ -100,7 +102,16 @@ func (m *Machine) Start() error {
 
 	m.Stats.Start = time.Now()
 
+	// count the inputs we have
 	lines, err := LineReader(m.filename, 0)
+	if err != nil {
+		return err
+	}
+	for _ = range lines {
+		m.Stats.Inputs++	
+	}
+
+	lines, err = LineReader(m.filename, 0)
 	if err != nil {
 		return err
 	}
